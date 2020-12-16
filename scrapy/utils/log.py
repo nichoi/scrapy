@@ -81,22 +81,33 @@ def configure_logging(settings=None, install_root_handler=True):
     are used.
     """
     if not sys.warnoptions:
+        logging.info("if not sys.warnoptions")
         # Route warnings through python logging
         logging.captureWarnings(True)
+        logging.info("logging.captureWarnings(True)")
 
     observer = twisted_log.PythonLoggingObserver('twisted')
+    logging.info("observer = twisted_log.PythonLoggingObserver('twisted')")
     observer.start()
+    logging.info("observer.start()")
 
     dictConfig(DEFAULT_LOGGING)
+    logging.info("dictConfig(DEFAULT_LOGGING)")
 
     if isinstance(settings, dict) or settings is None:
+        logging.info("isinstance(settings, dict) or settings is None")
         settings = Settings(settings)
+        logging.info("Settings(settings)")
 
     if settings.getbool('LOG_STDOUT'):
+        logging.info("settings.getbool('LOG_STDOUT')")
         sys.stdout = StreamLogger(logging.getLogger('stdout'))
+        logging.info("StreamLogger(logging.getLogger('stdout'))")
 
     if install_root_handler:
+        logging.info("install_root_handler")
         install_scrapy_root_handler(settings)
+        logging.info("install_scrapy_root_handler(settings)")
 
 
 def install_scrapy_root_handler(settings):
