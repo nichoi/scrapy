@@ -91,23 +91,39 @@ def configure_logging(settings=None, install_root_handler=True):
     observer.start()
     logging.info("observer.start()")
 
-    dictConfig(DEFAULT_LOGGING)
-    logging.info("dictConfig(DEFAULT_LOGGING)")
+    import os
+    import json
+    if os.environ.get("SCRAPY_DICT_CONFIG_KS") is None:
+        dictConfig(DEFAULT_LOGGING)
+        logging.info("dictConfig(DEFAULT_LOGGING)")
+
+    elif "SCRAPY_DICT_CONFIG_STR" in os.environ:
+        dc = json.loads(os.environ.get("SCRAPY_DICT_CONFIG_STR"))
+        dictConfig(dc)
+        logging.info("dictConfig(dc)")
+
+    logging.info("dc done")
 
     if isinstance(settings, dict) or settings is None:
         logging.info("isinstance(settings, dict) or settings is None")
         settings = Settings(settings)
         logging.info("Settings(settings)")
 
+    logging.info("settings done")
+
     if settings.getbool('LOG_STDOUT'):
         logging.info("settings.getbool('LOG_STDOUT')")
         sys.stdout = StreamLogger(logging.getLogger('stdout'))
         logging.info("StreamLogger(logging.getLogger('stdout'))")
 
+    logging.info("streamlogger done")
+
     if install_root_handler:
         logging.info("install_root_handler")
         install_scrapy_root_handler(settings)
         logging.info("install_scrapy_root_handler(settings)")
+
+    logging.info("install_root_handler done")
 
 
 def install_scrapy_root_handler(settings):
