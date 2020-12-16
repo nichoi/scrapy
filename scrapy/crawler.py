@@ -277,10 +277,15 @@ class CrawlerProcess(CrawlerRunner):
     """
 
     def __init__(self, settings=None, install_root_handler=True):
+        logging.info("CrawlerProcess __init__")
         super().__init__(settings)
+        logging.info("super().__init__(settings)")
         install_shutdown_handlers(self._signal_shutdown)
+        logging.info("install_shutdown_handlers(self._signal_shutdown)")
         configure_logging(self.settings, install_root_handler)
+        logging.info("configure_logging(self.settings, install_root_handler)")
         log_scrapy_info(self.settings)
+        logging.info("log_scrapy_info(self.settings)")
 
     def _signal_shutdown(self, signum, _):
         from twisted.internet import reactor
